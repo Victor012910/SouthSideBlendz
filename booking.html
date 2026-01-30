@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Appointment | SouthSideBlendz</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <section class="booking-hero">
+    <h1>Request an Appointment</h1>
+    <p>Houston • SouthSide • Clean Blends Only</p>
+  </section>
+
+  <section class="about">
+    <h2>Availability</h2>
+    <p>
+      <strong>Every day:</strong> 3:00 PM – 5:00 PM<br><br>
+      <strong>Monday • Wednesday • Friday:</strong> 8:00 PM – 11:00 PM<br><br>
+      <strong>Late fee:</strong> Appointments after <strong>9:00 PM</strong> include a <strong>$5</strong> extra charge.
+    </p>
+  </section>
+
+  <section class="booking-form-section">
+    <form id="booking-form" class="booking-form">
+
+      <div class="form-group">
+        <label for="client_name">Name</label>
+        <input type="text" id="client_name" name="client_name" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="client_email">Email</label>
+        <input type="email" id="client_email" name="client_email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="service">Service</label>
+        <select id="service" name="service" required>
+          <option value="">Select service</option>
+          <option value="Fade">Fade</option>
+          <option value="Taper">Taper</option>
+          <option value="Beard Trim">Beard Trim</option>
+          <option value="Full Cut">Full Cut</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="appointment_date">Preferred Date</label>
+        <input type="date" id="appointment_date" name="appointment_date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="appointment_time">Preferred Time</label>
+        <select id="appointment_time" name="appointment_time" required>
+          <option value="">Select a time (pick a date first)</option>
+        </select>
+      </div>
+
+      <p id="feeNote" style="margin-top:-8px; text-align:left; font-size:0.9rem; color:#bbbbbb;"></p>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <input type="text" id="notes" name="notes" placeholder="Anything the barber should know? (optional)">
+      </div>
+
+      <!-- Hidden fields used to build Accept/Deny links in the barber email -->
+      <input type="hidden" id="accept_link" name="accept_link" value="">
+      <input type="hidden" id="deny_link" name="deny_link" value="">
+
+      <button type="submit" class="btn full">Send Request</button>
+
+      <p id="statusMessage"></p>
+      <p class="booking-note">
+        Requests are reviewed by the barber. You’ll get an email once it’s accepted or denied.
+      </p>
+
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2026 SouthSideBlendz • Houston, TX</p>
+  </footer>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init("X-4rv1X5l5nXlh2tF"); // ✅ Public Key
+    })();
+  </script>
+
+  <script src="js/email.js"></script>
+</body>
+</html>
