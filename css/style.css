@@ -270,3 +270,115 @@ footer {
     font-size: 3rem;
   }
 }
+/* =========================
+   MOBILE-FIRST IMPROVEMENTS
+========================= */
+
+/* Stop iOS/Safari weirdness with fixed backgrounds */
+@media (max-width: 900px) {
+  .hero {
+    background-attachment: scroll;
+  }
+}
+
+/* General mobile layout polish */
+@media (max-width: 600px) {
+
+  /* Better overall spacing */
+  section {
+    padding: 55px 16px;
+    text-align: center;
+  }
+
+  /* Hero: avoid 100vh bugs on mobile browsers */
+  .hero {
+    height: auto;
+    min-height: 100svh; /* modern mobile safe viewport */
+  }
+
+  .hero-content {
+    padding: 28px 16px;
+  }
+
+  .hero h1 {
+    font-size: 3.1rem;   /* was 3.5rem */
+    letter-spacing: 2px;
+    line-height: 1.0;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    margin: 12px 0 22px;
+  }
+
+  /* Buttons should feel tappable */
+  .btn {
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+  }
+
+  /* Headings scale nicer */
+  h2 {
+    font-size: 2.2rem; /* was 2.4rem */
+    line-height: 1.05;
+  }
+
+  /* Service cards: stack name + price */
+  .service-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px;
+    font-size: 1rem;
+  }
+
+  .service-card span {
+    font-size: 0.95rem;
+  }
+
+  /* Gallery: force 1 column + better image sizing */
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .gallery-grid img {
+    height: 230px; /* less tall for mobile */
+  }
+
+  /* Booking page form spacing */
+  .booking-form-section {
+    padding: 40px 16px;
+  }
+
+  .booking-form {
+    padding: 22px;
+  }
+
+  .booking-hero {
+    height: auto;
+    padding: 50px 16px;
+  }
+
+  .booking-hero h1 {
+    font-size: 2.6rem; /* was 3rem */
+  }
+
+  /* Make inputs easier to tap */
+  .form-group input,
+  .form-group select {
+    padding: 14px;
+    font-size: 1rem;
+  }
+}
+
+/* Optional: style the booking note text if you want it to stand out */
+.booking-note {
+  margin-top: 14px;
+  color: #bbbbbb;
+  font-size: 0.95rem;
+  text-align: center;
+}
