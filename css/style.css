@@ -145,15 +145,15 @@ h2 {
 
 .gallery-grid img {
   width: 100%;
-  height: auto;           /* let image decide its height */
-  max-height: 320px;      /* keeps layout clean */
-  object-fit: contain;    /* SHOW FULL IMAGE */
-  background-color: #000; /* optional: fills empty space cleanly */
+  height: auto;           /* shows full image (no crop) */
+  object-fit: contain;    /* ensures nothing gets cut off */
   border-radius: 10px;
+  display: block;
 }
 
+/* Optional: keep hover but without “zoom-crop” vibes */
 .gallery-grid img:hover {
-  transform: scale(1.05);
+  transform: none;
 }
 
 /* =========================
@@ -302,7 +302,7 @@ footer {
   }
 
   .hero h1 {
-    font-size: 3.1rem;   /* was 3.5rem */
+    font-size: 3.1rem;
     letter-spacing: 2px;
     line-height: 1.0;
   }
@@ -322,7 +322,7 @@ footer {
 
   /* Headings scale nicer */
   h2 {
-    font-size: 2.2rem; /* was 2.4rem */
+    font-size: 2.2rem;
     line-height: 1.05;
   }
 
@@ -339,15 +339,11 @@ footer {
     font-size: 0.95rem;
   }
 
-  /* Gallery: force 1 column + better image sizing */
+  /* Gallery: 1 column on mobile (NO image height limits) */
   .gallery-grid {
     grid-template-columns: 1fr;
     gap: 16px;
     margin-top: 28px;
-  }
-
-  .gallery-grid img {
-    height: 230px; /* less tall for mobile */
   }
 
   /* Booking page form spacing */
@@ -365,7 +361,7 @@ footer {
   }
 
   .booking-hero h1 {
-    font-size: 2.6rem; /* was 3rem */
+    font-size: 2.6rem;
   }
 
   /* Make inputs easier to tap */
@@ -382,9 +378,4 @@ footer {
   color: #bbbbbb;
   font-size: 0.95rem;
   text-align: center;
-}
-@media (max-width: 600px) {
-  .gallery-grid img {
-    max-height: 360px;
-  }
 }
