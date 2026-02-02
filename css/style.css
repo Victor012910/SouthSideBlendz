@@ -145,10 +145,11 @@ h2 {
 
 .gallery-grid img {
   width: 100%;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 6px;
-  transition: transform 0.3s ease;
+  height: auto;           /* let image decide its height */
+  max-height: 320px;      /* keeps layout clean */
+  object-fit: contain;    /* SHOW FULL IMAGE */
+  background-color: #000; /* optional: fills empty space cleanly */
+  border-radius: 10px;
 }
 
 .gallery-grid img:hover {
@@ -381,4 +382,9 @@ footer {
   color: #bbbbbb;
   font-size: 0.95rem;
   text-align: center;
+}
+@media (max-width: 600px) {
+  .gallery-grid img {
+    max-height: 360px;
+  }
 }
