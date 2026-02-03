@@ -3,8 +3,9 @@ const dateInput = document.getElementById("appointment_date");
 const timeSelect = document.getElementById("appointment_time");
 const statusMessage = document.getElementById("statusMessage");
 const feeNote = document.getElementById("feeNote");
-const acceptLinkInput = document.getElementById("accept_link");
-const denyLinkInput = document.getElementById("deny_link");
+
+// 🔒 Secure backend (Cloudflare Worker)
+const WORKER_URL = "https://southsideblendz-secure.victor0129hernandez.workers.dev";
 
 /**
  * Time options: 3:00 PM → 11:00 PM (30-min slots)
@@ -32,6 +33,8 @@ function buildTimeOptions() {
   ];
 
   times.forEach((t) => {
+    // NOTE: your site text says "after 9:00 PM" but this flags 9:00 PM as late.
+    // If you want strictly after 9:00 PM, change this to: t.startsWith("9:30") || t.startsWith("10:") || t.startsWith("11:")
     const isLate = t.startsWith("9:") || t.startsWith("10:") || t.startsWith("11:");
     const label = isLate ? `${t} (+$5)` : t;
 
@@ -60,69 +63,53 @@ function updateFeeNote() {
   }
 }
 
-/**
- * Builds the base URL for accept/deny links.
- * This handles GitHub Pages pathing:
- * - https://username.github.io/repo/
- * - local dev
- * - normal domains
- */
-function getBaseUrl() {
-  const { origin, pathname } = window.location;
-
-  // If on GitHub Pages, keep the repo path (/REPO/) so links work.
-  // Example pathname: /SouthSideBlendz/booking.html
-  const parts = pathname.split("/").filter(Boolean);
-
-  // If we have at least 1 path segment and we're on github.io, treat first segment as repo name.
-  const isGithubPages = origin.includes("github.io") && parts.length >= 1;
-
-  if (isGithubPages) {
-    return `${origin}/${parts[0]}`;
-  }
-
-  // Otherwise, normal hosting
-  return origin;
-}
-
-/**
- * Stores Accept/Deny links into hidden inputs (so EmailJS template can print them)
- */
-function setDecisionLinks() {
-  const baseUrl = getBaseUrl();
-
-  const params = new URLSearchParams({
-    client_name: document.getElementById("client_name").value.trim(),
-    client_email: document.getElementById("client_email").value.trim(),
-    service: document.getElementById("service").value,
-    appointment_date: document.getElementById("appointment_date").value,
-    appointment_time: document.getElementById("appointment_time").value
-  });
-
-  acceptLinkInput.value = `${baseUrl}/accept.html?${params.toString()}`;
-  denyLinkInput.value = `${baseUrl}/deny.html?${params.toString()}`;
-}
-
 // Events
 dateInput.addEventListener("change", buildTimeOptions);
 timeSelect.addEventListener("change", updateFeeNote);
 
 // Submit handler
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   statusMessage.textContent = "Sending request...";
   statusMessage.style.color = "#7CFC00";
 
-  // Build Accept/Deny URLs and inject into hidden fields
-  setDecisionLinks();
+  // Collect values (matching your booking.html input IDs)
+  const client_name = document.getElementById("client_name").value.trim();
+  const client_email = document.getElementById("client_email").value.trim();
+  const service = document.getElementById("service").value;
+  const appointment_date = document.getElementById("appointment_date").value;
+  const appointment_time = document.getElementById("appointment_time").value;
 
-  emailjs.sendForm(
-    "service_bkl0x7d",
-    "template_it12o9h",
-    form
-  )
-  .then(() => {
+  // Basic front-end validation
+  if (!client_name || !client_email || !service || !appointment_date || !appointment_time) {
+    statusMessage.textContent = "❌ Please fill out all fields.";
+    statusMessage.style.color = "#ff6b6b";
+    return;
+  }
+
+  // Worker expects keys: client_name, client_email, service, date, time
+  const payload = {
+    client_name,
+    client_email,
+    service,
+    date: appointment_date,
+    time: appointment_time
+  };
+
+  try {
+    const res = await fetch(`${WORKER_URL}/api/request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || "Request failed. Please try again.");
+    }
+
     statusMessage.textContent =
       "✅ Request sent! You’ll get an email once it’s accepted or denied.";
     statusMessage.style.color = "#7CFC00";
@@ -130,12 +117,11 @@ form.addEventListener("submit", function (e) {
     form.reset();
     timeSelect.innerHTML = `<option value="">Select a time (pick a date first)</option>`;
     feeNote.textContent = "";
-  })
-  .catch((err) => {
-    console.error("EmailJS error:", err);
+  } catch (err) {
+    console.error("Worker error:", err);
     statusMessage.textContent = "❌ Something went wrong. Please try again.";
     statusMessage.style.color = "#ff6b6b";
-  });
+  }
 });
 
 // Init
