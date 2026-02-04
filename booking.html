@@ -25,16 +25,32 @@
   </section>
 
   <section class="booking-form-section">
-    <form id="booking-form" class="booking-form">
+    <form id="booking-form" class="booking-form" novalidate>
 
       <div class="form-group">
         <label for="client_name">Name</label>
-        <input type="text" id="client_name" name="client_name" placeholder="Your name" required>
+        <input
+          type="text"
+          id="client_name"
+          name="client_name"
+          placeholder="Your name"
+          required
+          maxlength="60"
+          autocomplete="name"
+        >
       </div>
 
       <div class="form-group">
         <label for="client_email">Email</label>
-        <input type="email" id="client_email" name="client_email" placeholder="you@example.com" required>
+        <input
+          type="email"
+          id="client_email"
+          name="client_email"
+          placeholder="you@example.com"
+          required
+          maxlength="100"
+          autocomplete="email"
+        >
       </div>
 
       <div class="form-group">
@@ -64,16 +80,20 @@
 
       <div class="form-group">
         <label for="notes">Notes</label>
-        <input type="text" id="notes" name="notes" placeholder="Anything the barber should know? (optional)">
+        <input
+          type="text"
+          id="notes"
+          name="notes"
+          placeholder="Anything the barber should know? (optional)"
+          maxlength="200"
+          autocomplete="off"
+        >
       </div>
-
-      <!-- Hidden fields used to build Accept/Deny links in the barber email -->
-      <input type="hidden" id="accept_link" name="accept_link" value="">
-      <input type="hidden" id="deny_link" name="deny_link" value="">
 
       <button type="submit" class="btn full">Send Request</button>
 
-      <p id="statusMessage"></p>
+      <p id="statusMessage" style="margin-top:12px;"></p>
+
       <p class="booking-note">
         Requests are reviewed by the barber. You’ll get an email once it’s accepted or denied.
       </p>
@@ -85,3 +105,24 @@
     <p>© 2026 SouthSideBlendz • Houston, TX</p>
   </footer>
 
+  
+  <script src="js/booking.js"></script>
+
+  <!-- flatpickr calendar (forces date picker on desktop) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script src="js/booking.js"></script>
+
+<script>
+  // Force a calendar picker across desktop/mobile
+  flatpickr("#appointment_date", {
+    dateFormat: "Y-m-d",
+    minDate: "today",
+    disableMobile: false // keep native mobile if available; set true to force flatpickr on mobile too
+  });
+</script>
+
+
+</body>
+</html>
