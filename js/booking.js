@@ -84,7 +84,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("/api/request", {
+    const res = await fetch("https://southsideblendz-secure.victor0129hernandez.workers.dev/api/request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bookingData),
