@@ -1,10 +1,9 @@
 // decision.js (accept.html + deny.html)
-// We no longer send emails from the browser.
-// The Cloudflare Worker sends emails securely.
+// Emails are sent by the Cloudflare Worker (secure).
+// These pages only show a confirmation message.
 
 document.addEventListener("DOMContentLoaded", () => {
   const statusEl = document.getElementById("statusMessage");
-
   if (!statusEl) return;
 
   const page = window.location.pathname.toLowerCase();
@@ -15,8 +14,5 @@ document.addEventListener("DOMContentLoaded", () => {
   } else if (page.includes("deny")) {
     statusEl.textContent = "❌ Appointment denied. The client has been notified.";
     statusEl.style.color = "#ff6b6b";
-  } else {
-    statusEl.textContent = "✅ Updated.";
-    statusEl.style.color = "#7CFC00";
   }
 });
